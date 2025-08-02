@@ -2,7 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors"); // Add this line
 const { connectDB } = require("./config/db");
-const { authRoutes, n8n_deployRoutes } = require("./routes/index");
+const {
+  authRoutes,
+  n8n_deployRoutes,
+  vapi_deployRoutes,
+} = require("./routes/index");
 require("dotenv").config();
 
 const app = express();
@@ -18,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/deploy", n8n_deployRoutes);
+app.use("/api/vapi", vapi_deployRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
