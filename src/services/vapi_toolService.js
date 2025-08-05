@@ -13,7 +13,9 @@ const headers = {
 const toolGetVehicleByPhone = async (uuid, name) => {
   const cleanName = String(name || "")
     .replace(/\s+/g, "")
-    .replace(/'/g, "");
+    .replace(/'/g, "")
+    .replace(/&/g, "");
+
   const payload = {
     type: "function",
     function: {
@@ -44,7 +46,8 @@ const toolGetVehicleByPhone = async (uuid, name) => {
 const toolSuggestAppointmentSlots = async (uuid, name) => {
   const cleanName = String(name || "")
     .replace(/\s+/g, "")
-    .replace(/'/g, "");
+    .replace(/'/g, "")
+    .replace(/&/g, "");
 
   const payload = {
     type: "function",
@@ -76,7 +79,8 @@ const toolSuggestAppointmentSlots = async (uuid, name) => {
 const toolBookAppointment = async (uuid, name) => {
   const cleanName = String(name || "")
     .replace(/\s+/g, "")
-    .replace(/'/g, "");
+    .replace(/'/g, "")
+    .replace(/&/g, "");
 
   const payload = {
     type: "function",
