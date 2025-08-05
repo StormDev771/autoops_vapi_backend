@@ -163,9 +163,9 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const createAgent = async () => {
+const createAgent = async (name) => {
   const payload = {
-    name: "AutoOps-test",
+    name: `${name}`,
     model: {
       model: "gpt-4.1",
       provider: "openai",

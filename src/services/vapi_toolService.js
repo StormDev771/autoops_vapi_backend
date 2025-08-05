@@ -10,11 +10,14 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const toolGetVehicleByPhone = async () => {
+const toolGetVehicleByPhone = async (uuid, name) => {
+  const cleanName = String(name || "")
+    .replace(/\s+/g, "")
+    .replace(/'/g, "");
   const payload = {
     type: "function",
     function: {
-      name: "getVehicleByPhone_test",
+      name: `getVehicleByPhone_${cleanName}`,
       description: "Get vehicle by phone number",
       parameters: {
         type: "object",
@@ -28,7 +31,7 @@ const toolGetVehicleByPhone = async () => {
       },
     },
     server: {
-      url: "https://n8n.sknk.us/webhook/fbfa8682-76bf-45c6-b4c0-a18bc54caef0",
+      url: `https://n8n.sknk.us/webhook/${uuid}`,
     },
   };
 
@@ -38,11 +41,15 @@ const toolGetVehicleByPhone = async () => {
   return response.data;
 };
 
-const toolSuggestAppointmentSlots = async () => {
+const toolSuggestAppointmentSlots = async (uuid, name) => {
+  const cleanName = String(name || "")
+    .replace(/\s+/g, "")
+    .replace(/'/g, "");
+
   const payload = {
     type: "function",
     function: {
-      name: "suggestAppointmentSlots_test",
+      name: `suggestAppointmentSlots_${cleanName}`,
       description: "Suggest appointment slots.",
       parameters: {
         type: "object",
@@ -56,7 +63,7 @@ const toolSuggestAppointmentSlots = async () => {
       },
     },
     server: {
-      url: "https://n8n.sknk.us/webhook/fbfa8682-76bf-45c6-b4c0-a18bc54caef0",
+      url: `https://n8n.sknk.us/webhook/${uuid}`,
     },
   };
 
@@ -66,11 +73,15 @@ const toolSuggestAppointmentSlots = async () => {
   return response.data;
 };
 
-const toolBookAppointment = async () => {
+const toolBookAppointment = async (uuid, name) => {
+  const cleanName = String(name || "")
+    .replace(/\s+/g, "")
+    .replace(/'/g, "");
+
   const payload = {
     type: "function",
     function: {
-      name: "bookAppointment_test",
+      name: `bookAppointment_${cleanName}`,
       description: "Suggest appointment slots.",
       parameters: {
         type: "object",
@@ -122,7 +133,7 @@ const toolBookAppointment = async () => {
       },
     },
     server: {
-      url: "https://n8n.sknk.us/webhook/fbfa8682-76bf-45c6-b4c0-a18bc54caef0",
+      url: `https://n8n.sknk.us/webhook/${uuid}`,
     },
   };
 
@@ -132,12 +143,12 @@ const toolBookAppointment = async () => {
   return response.data;
 };
 
-const assignToolToAgent = async (agentId, toolId) => {
+const assignToolToAgent = async (agentId, toolIds) => {
   const payload = {
     model: {
       provider: "openai",
-      model: "gpt-4o",
-      toolIds: [`${toolId}`],
+      model: "gpt-4.1",
+      toolIds: [...toolIds],
     },
   };
 

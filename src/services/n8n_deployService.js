@@ -2,9 +2,9 @@
 require("dotenv").config();
 const axios = require("axios");
 const {
-  GET_VEHICLE_BY_PHONE,
-  SUGGEST_APPT_SLOTS,
-  BOOK_APPT,
+  getVehicleByPhone,
+  suggestApptSlots,
+  bookAppt,
 } = require("../n8n_workflow/n8n_templete_workflow");
 
 const N8N_API_URL = process.env.N8N_API_URL;
@@ -15,38 +15,49 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const deployWorkflow = async (workflowname) => {
+const deployWorkflow = async (id, name, type) => {
   let res;
+  let uuid;
 
-  switch (workflowname) {
+  switch (type) {
     case "getVehicleByPhone":
+      const result = getVehicleByPhone(id, name);
       res = await axios.post(
         `${N8N_API_URL}api/v1/workflows`,
-        GET_VEHICLE_BY_PHONE,
+        result.workflow,
         {
           headers,
         }
       );
+      uuid = result.uuid;
       break;
     case "suggestApptSlots":
+      const result1 = suggestApptSlots(id, name);
       res = await axios.post(
         `${N8N_API_URL}api/v1/workflows`,
-        SUGGEST_APPT_SLOTS,
+        result1.workflow,
         {
           headers,
         }
       );
+      uuid = result1.uuid;
       break;
     case "bookAppt":
-      res = await axios.post(`${N8N_API_URL}api/v1/workflows`, BOOK_APPT, {
-        headers,
-      });
+      const result2 = bookAppt(id, name);
+      res = await axios.post(
+        `${N8N_API_URL}api/v1/workflows`,
+        result2.workflow,
+        {
+          headers,
+        }
+      );
+      uuid = result2.uuid;
       break;
     default:
       throw new Error(`Unknown workflow name: ${workflowname}`);
   }
 
-  return { action: "created", workflow: res.data };
+  return { action: "created", workflow: res.data, uuid: uuid };
 };
 
 module.exports = { deployWorkflow };

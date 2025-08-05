@@ -6,8 +6,10 @@ const {
 } = require("../services/vapi_phoneService");
 
 const createAgentHandler = async (req, res) => {
+  const { name } = req.body;
+
   try {
-    const agent = await createAgent();
+    const agent = await createAgent(name);
 
     return res.status(200).json({
       message: "Voice agent generated successfully!",

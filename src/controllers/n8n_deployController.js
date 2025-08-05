@@ -2,21 +2,20 @@
 const { deployWorkflow } = require("../services/n8n_deployService");
 
 const deployWorkflowHandler = async (req, res) => {
-  const { workflowname } = req.body;
+  const { id, name, type } = req.body;
 
-  if (!workflowname) {
+  if (!id || !name || !type) {
     return res
       .status(400)
-      .json({ error: "workflowname is required in request body" });
+      .json({ error: "Missing required fields: id, name, type" });
   }
 
   try {
     // Parse the JSON string from the request body
-    const result = await deployWorkflow(workflowname);
+    const result = await deployWorkflow(id, name, type);
     return res.status(200).json({
       status: "success",
-      action: result.action,
-      workflow: result.workflow,
+      uuid: result.uuid,
     });
   } catch (err) {
     console.error("❌ Deployment failed:", err.message);

@@ -5,6 +5,6 @@ const {
   deployWorkflowHandler,
 } = require("../controllers/n8n_deployController");
 
-router.post("/n8n", deployWorkflowHandler);
+router.post("/", deployWorkflowHandler);
 
 module.exports = router;

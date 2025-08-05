@@ -6,6 +6,8 @@ const {
   authRoutes,
   n8n_deployRoutes,
   vapi_deployRoutes,
+  vapi_toolRoutes,
+  marketplacesRoutes,
 } = require("./routes/index");
 require("dotenv").config();
 
@@ -21,8 +23,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/deploy", n8n_deployRoutes);
+app.use("/api/n8n", n8n_deployRoutes);
 app.use("/api/vapi", vapi_deployRoutes);
+app.use("/api/vapi/tools", vapi_toolRoutes);
+app.use("/api/marketplaces", marketplacesRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
