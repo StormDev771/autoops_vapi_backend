@@ -164,6 +164,9 @@ const headers = {
 };
 
 const createAgent = async (name) => {
+  if (name.length > 40) {
+    name = name.slice(23);
+  }
   const payload = {
     name: `${name}`,
     model: {
