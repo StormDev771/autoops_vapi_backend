@@ -108,7 +108,7 @@ const toolBookAppointment = async (uuid, name) => {
           firstName: {
             type: "string",
           },
-          lasttName: {
+          lastName: {
             type: "string",
           },
           phoneNumber: {
