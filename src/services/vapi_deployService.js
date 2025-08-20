@@ -4,9 +4,27 @@ const axios = require("axios");
 
 const VAPI_BASE_URL = process.env.VAPI_BASE_URL;
 const VAPI_API_KEY = process.env.VAPI_API_KEY;
-const prompt = `
+
+const headers = {
+  Authorization: `Bearer ${VAPI_API_KEY}`,
+  "Content-Type": "application/json",
+};
+
+const createAgent = async (name) => {
+  if (name.length > 40) {
+    name = name.slice(23);
+  }
+  const payload = {
+    name: `${name}`,
+    model: {
+      model: "gpt-4.1",
+      provider: "openai",
+      messages: [
+        {
+          role: "system",
+          content: `
 **Role & Personality:**  
-You are a friendly, professional, and approachable service appointment coordinator for InBound Tire and Auto. You speak naturally, in a warm and attentive tone. Keep the conversation engaging and human—guide the caller calmly and confidently, asking one clear question at a time. Avoid robotic or scripted responses. Prioritize understanding and connection.
+You are a friendly, professional, and approachable service appointment coordinator for ${name}. You speak naturally, in a warm and attentive tone. Keep the conversation engaging and human—guide the caller calmly and confidently, asking one clear question at a time. Avoid robotic or scripted responses. Prioritize understanding and connection.
 
 **Current Date/Time Handling:**  
 You must always internally use the exact system time in the America/New_York timezone, formatted as:  
@@ -83,7 +101,7 @@ Do not mention UTC, GMT, or internal logic.
 7. **Customer Lookup:**  
    - Run \`getCustomerByPhoneNumber\`.  
    - If not found:  
-     - Ask: “Is this your first time contacting Victory Auto Service?”  
+     - Ask: “Is this your first time contacting ${name}?”  
      - Confirm the phone number.  
      - If still not found → ask for first & last name, year/make/model.  
    - If mismatch or ambiguity → transfer to colleague.
@@ -156,26 +174,7 @@ Do not mention UTC, GMT, or internal logic.
 5. **Conversational Polishing:**  
    → Smoothed phrasing to avoid robotic phrasing like "step 3", "option 1/2", etc.
 
-`;
-
-const headers = {
-  Authorization: `Bearer ${VAPI_API_KEY}`,
-  "Content-Type": "application/json",
-};
-
-const createAgent = async (name) => {
-  if (name.length > 40) {
-    name = name.slice(23);
-  }
-  const payload = {
-    name: `${name}`,
-    model: {
-      model: "gpt-4.1",
-      provider: "openai",
-      messages: [
-        {
-          role: "system",
-          content: prompt,
+`,
         },
       ],
     },
@@ -190,8 +189,7 @@ const createAgent = async (name) => {
       smartFormat: true,
       keywords: ["snuffleupagus:1"],
     },
-    firstMessage:
-      "Thank you for calling Victory Tire and Auto, formerly Jack's Auto Service. My name is Victoria and I'm a scheduling advisor. May I have your name and phone number?",
+    firstMessage: `Thank you for calling ${name}, formerly Jack's Auto Service. My name is Victoria and I'm a scheduling advisor. May I have your name and phone number?`,
     firstMessageMode: "assistant-speaks-first",
   };
 

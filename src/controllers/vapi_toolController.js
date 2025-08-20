@@ -54,16 +54,16 @@ const toolBookAppointmentHandler = async (req, res) => {
 };
 
 const assignToolToAgentHandler = async (req, res) => {
-  const { agentId, toolIds } = req.body;
+  const { agentId, toolIds, shop_name } = req.body;
 
-  if (!agentId || !toolIds || !Array.isArray(toolIds)) {
+  if (!agentId || !toolIds || !Array.isArray(toolIds) || !shop_name) {
     return res
       .status(400)
-      .json({ error: "Agent ID and tool IDs are required" });
+      .json({ error: "Agent ID, tool IDs and shop name are required" });
   }
 
   try {
-    const result = await assignToolToAgent(agentId, toolIds);
+    const result = await assignToolToAgent(agentId, toolIds, shop_name);
     return res.status(200).json({ status: "success", data: result });
   } catch (err) {
     console.error("❌ Error assigning tool to agent:", err.message);
